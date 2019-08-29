@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "88418823-f96b-4479-82a4-f3abecbc33dc",
+		"name": "ChartJS-SocketIO-Example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Coord",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b28247d7-6147-4405-b056-cdd411da37e2",
+						"exec": [
+							"pm.globals.set(\"random_x\", _.random(-20, 20));",
+							"pm.globals.set(\"random_y\", _.random(-20, 20));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"x\": {{random_x}},\n\t\"y\": {{random_y}}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3333/graph",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"graph"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Coords",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fedd52b3-3d3c-4c34-94ed-d08a70684e01",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3333/graph",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"graph"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Graph",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/graph/clear",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"graph",
+						"clear"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
