@@ -4,17 +4,16 @@ const Logger = require('../logger')('[GRAPH]');
 const io = require('../../socket');
 
 async function searchAllCoords() {
-    let x = [];
-    let y = [];
-
-    let coords = await Coord.find();
-
-    coords.forEach((coord) => {
-        x.push(coord.x);
-        y.push(coord.y);
+    /* Find all coords and exclude id and v fields */
+    let coords = await Coord.find({}, { 
+        __v: false,
+        _id: false
     });
 
-    return { x, y }
+    /* Sending coords to socket */
+    io.emit('graphUpdate', coords);
+
+    return coords;
 }
 
 module.exports = {
@@ -28,19 +27,17 @@ module.exports = {
 
         Logger.print(`[${x},${y}] created!`);
 
-        /* Finding all coords to send to socket */
         const coords = await searchAllCoords();
-        io.emit('graphUpdate', coords);
-
         return res.status(201).json(coords);
     },
     async search(req, res) {
         const coords = await searchAllCoords();
-
         return res.status(200).json(coords);
     },
     async clear(req, res) {
         await Coord.deleteMany();
-        return res.status(204).json();
+
+        const coords = await searchAllCoords();
+        return res.status(200).json(coords);
     }
 };

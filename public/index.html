@@ -6,32 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Real Time Chart</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
-<body>
-    <table id="tabela">
-        <thead>
-            <th>X</th>
-            <th>Y</th>
-        </thead>
-        <tbody>
+<body class="container">
+    <div id="contents" class="row">
+        <div class="col l2 m4 s12">
+            <table id="data" class="responsive-table centered">
+                <thead>
+                    <th>X</th>
+                    <th>Y</th>
+                </thead>
+                <tbody>
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+        <div class="col l10 m8 s12">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
 
-    <script src="js/socket.io.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/app.js"></script>
     <script>
-        var socket = io('http://localhost:3000');
-        socket.on('graphUpdate', function (data) {
-            $('#tabela > tbody').empty();
-
-            let { x, y } = data;
-            let length = x.length;
-
-            for (let i = 0; i < length; i++) {
-                $('#tabela > tbody').append(`<tr><td>${x[i]}</td><td>${y[i]}</td></tr>`);
-            }
+        /* Fetching data when page loads */
+        $(document).ready(() => {
+            $.ajax({
+                url: 'http://localhost:3333/graph',
+                method: 'GET',
+                beforeSend: () => {
+                    /* Hiding contents before fetch */
+                    $('#contents').hide();
+                },
+                success: (result) => {
+                    populateTable(result);
+                    populateGraph(result);
+                    $('#contents').show();
+                },
+                error: (err) => {
+                    $('body').append(`<pre>${JSON.stringify(err)}</pre>`);
+                }
+            })
         });
     </script>
 </body>
