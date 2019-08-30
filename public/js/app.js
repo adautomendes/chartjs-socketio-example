@@ -43,7 +43,7 @@ function genDataset(data) {
         dataset.push({
             x: element.x,
             y: element.y,
-            r: 25,
+            r: 10,
         });
     });
 
@@ -57,7 +57,7 @@ function genRandomColor(dataset) {
         let g = Math.round(Math.random() * 255);
         let b = Math.round(Math.random() * 255);
 
-        colors.push(`rgba(${r}, ${g}, ${b}, 0.7)`);
+        colors.push(`rgba(${r}, ${g}, ${b}, 0.8)`);
     }
 
     return colors;
